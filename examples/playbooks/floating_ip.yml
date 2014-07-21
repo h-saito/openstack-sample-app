@@ -1,0 +1,19 @@
+---
+- name: playbook test
+  hosts: localhost
+
+  tasks:
+  - name: use virtualenv
+    set_fact: ansible_python_interpreter=/root/python-venv/bin/python
+  - name: manage floating_ip
+    local_action: hp_nova_floating_ip
+      state={{ state }}
+      floating_ip={{ floating_ip|default(None) }}
+      login_username={{ os_username }}
+      login_password={{ os_password }}
+      login_tenant_name={{ os_tenant_name }}
+      auth_url={{ auth_url }}
+
+##
+## [EOF]
+##
