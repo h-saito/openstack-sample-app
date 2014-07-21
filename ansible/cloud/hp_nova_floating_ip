@@ -56,7 +56,7 @@ requirements: ["novaclient"]
 
 EXAMPLES = '''
 # Creates new floating_ip for OpenStack
-- nova_compute:
+- hp_nova_floating_ip:
        state: present
        login_username: admin
        login_password: admin
