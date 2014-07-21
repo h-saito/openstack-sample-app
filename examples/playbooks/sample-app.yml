@@ -1,0 +1,25 @@
+---
+- name: deploy sample application
+  hosts: "{{ target }}"
+
+  tasks:
+  - name: package install
+    yum: name={{ item }} state=latest
+    with_items:
+    - git
+  - name: git clone sample-app
+    git: repo=https://github.com/irixjp/openstack-sample-app.git dest=/root/openstack-sample-app
+  - name: execute install_web
+    raw: /bin/sh /root/openstack-sample-app/server-setup/install_web.sh
+  - name: execute install_rest
+    raw: /bin/sh /root/openstack-sample-app/server-setup/install_rest.sh
+  - name: execute install_db
+    raw: /bin/sh /root/openstack-sample-app/server-setup/install_db.sh
+  - name: web init
+    raw: /bin/sh /root/openstack-sample-app/server-setup/web.init.sh
+  - name: rest init
+    raw: /bin/sh /root/openstack-sample-app/server-setup/rest.init.sh
+
+##
+## [EOF]
+##
