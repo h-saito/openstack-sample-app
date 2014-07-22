@@ -1,0 +1,41 @@
+---
+- name: create vm and deploy sample application
+  hosts: "{{ target }}"
+
+  tasks:
+  - name: create floating_ip
+    local_action: hp_nova_floating_ip
+      state={{ state }}
+      login_username={{ user }}
+      login_password={{ password }}
+      login_tenant_name={{ tenant }}
+      auth_url={{ auth_url }}
+    register: floating_ip
+  - name: create vm instance
+    local_action: nova_compute
+      state={{ state }}
+      login_username={{ user }}
+      login_password={{ password }}
+      login_tenant_name={{ tenant }}
+      auth_url={{ auth_url }}
+      name={{ server_name }}
+      image_id="202e7659-f7c6-444a-8b32-872fe2ed080c"
+      flavor_id="101"
+      key_name={{ key_name }}
+      security_groups={{ sec_group }}
+    register: instance
+
+  - name: associate floating_ip to vm instance
+    local_action: hp_nova_floating_ip_associate
+      state={{ state }}
+      login_username={{ user }}
+      login_password={{ password }}
+      login_tenant_name={{ tenant }}
+      auth_url={{ auth_url }}
+      name={{ server_name }}
+      floating_ip={{ floating_ip.ip }}
+      fixed_ip={{ instance.private_ip }}
+
+##
+## [EOF]
+##
