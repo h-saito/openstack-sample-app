@@ -3,8 +3,6 @@
   hosts: localhost
 
   tasks:
-  - name: use virtualenv
-    set_fact: ansible_python_interpreter=/root/python-venv/bin/python
   - name: create or delete server
     local_action: nova_compute
       state={{ state }}

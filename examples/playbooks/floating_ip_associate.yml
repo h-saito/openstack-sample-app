@@ -3,8 +3,6 @@
   hosts: localhost
 
   tasks:
-  - name: use virtualenv
-    set_fact: ansible_python_interpreter=/root/python-venv/bin/python
   - name: manage floating_ip
     local_action: hp_nova_floating_ip_associate
       state={{ state }}
