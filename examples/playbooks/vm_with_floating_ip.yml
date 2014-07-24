@@ -1,6 +1,11 @@
 ---
-- name: create vm and deploy sample application
-  hosts: "{{ target }}"
+- name: create vm and associate floating_ip
+  hosts: localhost
+  vars:
+    image_id: "202e7659-f7c6-444a-8b32-872fe2ed080c"
+    flavor_id: "101"
+    key_name: "key-for-app-server"
+    sec_group: "security-for-app-server"
 
   tasks:
   - name: create floating_ip
@@ -11,6 +16,7 @@
       login_tenant_name={{ tenant }}
       auth_url={{ auth_url }}
     register: floating_ip
+
   - name: create vm instance
     local_action: nova_compute
       state={{ state }}
@@ -19,8 +25,8 @@
       login_tenant_name={{ tenant }}
       auth_url={{ auth_url }}
       name={{ server_name }}
-      image_id="202e7659-f7c6-444a-8b32-872fe2ed080c"
-      flavor_id="101"
+      image_id={{ image_id }}
+      flavor_id={{ flavor_id }}
       key_name={{ key_name }}
       security_groups={{ sec_group }}
     register: instance
