@@ -1,0 +1,46 @@
+---
+- name: deploy sample application
+  hosts: all
+  vars:
+    web: TBA
+    rest: TBA
+    db: TBA
+  tasks:
+  - name: package install
+    yum: name={{ item }} state=latest
+    with_items:
+    - git
+  - name: git clone sample-app
+    git: repo=https://github.com/irixjp/openstack-sample-app.git dest=/root/openstack-sample-app
+
+  - name: install web service
+    raw: /bin/sh /root/openstack-sample-app/server-setup/install_web.sh
+    when: ansible_hostname == "web"
+
+  - name: install rest service
+    raw: /bin/sh /root/openstack-sample-app/server-setup/install_rest.sh
+    when: ansible_hostname == "rest"
+
+  - name: install db service
+    raw: /bin/sh /root/openstack-sample-app/server-setup/install_db.sh
+    when: ansible_hostname == "db"
+
+  - name: copy endpoint.conf to all servers
+    template: src=./endpoint.conf.j2 dest=/root/openstack-sample-app/endpoint.conf owner=root group=root mode=0644
+    when: ansible_hostname == "web" or ansible_hostname == "rest"
+    notify:
+    - start web service
+    - start rest service
+
+  handlers:
+  - name: start web service
+    raw: /bin/sh /root/openstack-sample-app/server-setup/web.init.sh
+    when: ansible_hostname == "web"
+
+  - name: start rest service
+    raw: /bin/sh /root/openstack-sample-app/server-setup/rest.init.sh
+    when: ansible_hostname == "rest"
+
+##
+## [EOF]
+##
