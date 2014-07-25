@@ -15,6 +15,7 @@
       login_password={{ password }}
       login_tenant_name={{ tenant }}
       auth_url={{ auth_url }}
+      region_name={{ region }}
     register: floating_ip
 
   - name: create vm instance
@@ -24,6 +25,7 @@
       login_password={{ password }}
       login_tenant_name={{ tenant }}
       auth_url={{ auth_url }}
+      region_name={{ region }}
       name={{ server_name }}
       image_id={{ image_id }}
       flavor_id={{ flavor_id }}
@@ -38,6 +40,7 @@
       login_password={{ password }}
       login_tenant_name={{ tenant }}
       auth_url={{ auth_url }}
+      region_name={{ region }}
       name={{ server_name }}
       floating_ip={{ floating_ip.ip }}
       fixed_ip={{ instance.private_ip }}
