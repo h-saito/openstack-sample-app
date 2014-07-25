@@ -10,6 +10,7 @@
       login_password={{ os_password }}
       login_tenant_name={{ os_tenant_name }}
       auth_url={{ auth_url }}
+      region_name={{ region }}
       name={{ name }}
       fixed_ip={{ fixed_ip }}
       floating_ip={{ floating_ip }}
