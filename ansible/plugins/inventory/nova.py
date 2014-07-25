@@ -36,7 +36,8 @@ def get_list():
                               OS_USERNAME,
                               OS_PASSWORD,
                               OS_TENANT_NAME,
-                              OS_AUTH_URL)
+                              OS_AUTH_URL,
+                              region_name=OS_REGION_NAME)
     servers = nova.servers.list()
     networks = {}
     for s in servers:
