@@ -36,6 +36,11 @@ options:
         - The keystone url for authentication
      required: false
      default: 'http://127.0.0.1:35357/v2.0/'
+   region_name:
+     description:
+        - Selecting endpoint for authentication
+     required: false
+     default: None
    api_version:
      description:
         - The version number or nova api
@@ -107,6 +112,7 @@ def main():
         login_password                  = dict(required=True),
         login_tenant_name               = dict(required=True),
         auth_url                        = dict(default='http://127.0.0.1:35357/v2.0/'),
+        region_name                     = dict(default=None),
         api_version                     = dict(default='2'),
         name                            = dict(required=True),
         fixed_ip                        = dict(default=None),
@@ -119,7 +125,8 @@ def main():
                               module.params['login_username'],
                               module.params['login_password'],
                               module.params['login_tenant_name'],
-                              module.params['auth_url'])
+                              module.params['auth_url'],
+                              region_name=module.params['region_name'])
     try:
         nova.authenticate()
     except exceptions.Unauthorized, e:
